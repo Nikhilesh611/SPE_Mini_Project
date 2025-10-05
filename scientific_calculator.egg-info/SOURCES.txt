@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+setup.cfg
+scientific_calculator/__init__.py
+scientific_calculator/calc.py
+scientific_calculator.egg-info/PKG-INFO
+scientific_calculator.egg-info/SOURCES.txt
+scientific_calculator.egg-info/dependency_links.txt
+scientific_calculator.egg-info/entry_points.txt
+scientific_calculator.egg-info/requires.txt
+scientific_calculator.egg-info/top_level.txt
+tests/test_calc.py
