@@ -1,3 +1,2 @@
 InquirerPy
 unittest
-pytest
