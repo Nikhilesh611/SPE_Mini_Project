@@ -24,5 +24,10 @@ class TestCalculator(unittest.TestCase):
         with self.assertRaises(ValueError):
             calc.natural_log(-10)
 
+    def test_power(self):
+        self.assertEqual(calc.power(2, 3), 8)
+        self.assertEqual(calc.power(5, 0), 1)
+        self.assertAlmostEqual(calc.power(2, 0.5), math.sqrt(2), places=4)
+
 if __name__ == "__main__":
     unittest.main()

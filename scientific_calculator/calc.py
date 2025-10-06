@@ -1,5 +1,4 @@
 import math
-from InquirerPy import inquirer
 
 # Core functions
 def square_root(x):
@@ -17,41 +16,58 @@ def natural_log(x):
         raise ValueError("ln(x) is only defined for x > 0.")
     return math.log(x)
 
+def power(x, b):
+    return x ** b
 
-# CLI wrapper
+
+# Menu-driven CLI
 def main():
     while True:
-        choice = inquirer.select(
-            message="Choose an operation:",
-            choices=[
-                "Square Root (√x)",
-                "Factorial (!x)",
-                "Natural Logarithm (ln(x))",
-                "Exit"
-            ],
-        ).execute()
+        print("\n--- Scientific Calculator ---")
+        print("1. Square Root (√x)")
+        print("2. Factorial (!x)")
+        print("3. Natural Logarithm (ln(x))")
+        print("4. Power (x^b)")
+        print("5. Exit")
 
-        if choice == "Square Root (√x)":
-            x = float(input("Enter a number: "))
+        choice = input("Select an operation (1-5): ")
+
+        if choice == "1":
             try:
+                x = float(input("Enter a number: "))
                 print(f"√{x} = {square_root(x)}")
             except ValueError as e:
                 print(f"Error: {e}")
 
-        elif choice == "Factorial (!x)":
-            x = int(input("Enter an integer: "))
+        elif choice == "2":
             try:
+                x = int(input("Enter an integer: "))
                 print(f"{x}! = {factorial(x)}")
             except ValueError as e:
                 print(f"Error: {e}")
 
-        elif choice == "Natural Logarithm (ln(x))":
-            x = float(input("Enter a number: "))
+        elif choice == "3":
             try:
+                x = float(input("Enter a number: "))
                 print(f"ln({x}) = {natural_log(x)}")
             except ValueError as e:
                 print(f"Error: {e}")
 
-        elif choice == "Exit":
+        elif choice == "4":
+            try:
+                x = float(input("Enter the base (x): "))
+                b = float(input("Enter the exponent (b): "))
+                print(f"{x}^{b} = {power(x, b)}")
+            except ValueError as e:
+                print(f"Error: {e}")
+
+        elif choice == "5":
             print("Exiting...")
             break
+
+        else:
+            print("Invalid choice. Please select from 1-5.")
+
+
+if __name__ == "__main__":
+    main()
