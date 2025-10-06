@@ -1,8 +1,6 @@
 ---
 - name: Deploy Scientific Calculator Docker container
   hosts: managed_hosts
-  become: yes
-  become_user: root
 
   tasks:
     - name: Ensure Docker is installed
