@@ -1,0 +1,20 @@
+---
+- name: Deploy Scientific Calculator Docker container
+  hosts: managed_hosts
+  become: yes
+  become_user: root
+
+  tasks:
+    - name: Ensure Docker is installed
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+
+    - name: Pull latest image from Docker Hub
+      command: docker pull nikhilesh611/scientific_calculator:latest
+
+    - name: Stop and remove old container if exists
+      shell: |
+        docker stop sci_calc || true
+        docker rm sci_cal_

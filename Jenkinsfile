@@ -57,7 +57,7 @@ pipeline {
         stage('Deploy with Ansible') {
             steps {
                 // Pull the latest image and deploy using your Ansible playbook
-                sh 'ansible-playbook -i ~/hosts.ini ~/deploy.yml'
+                sh 'ansible-playbook -i ansible/hosts.ini ansible/deploy.yml'
             }
         }
     }
