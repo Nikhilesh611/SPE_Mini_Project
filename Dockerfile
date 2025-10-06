@@ -1,21 +1,15 @@
-# Use official Python image
+# Use official Python 3 image
 FROM python:3.12-slim
 
 # Set working directory inside the container
 WORKDIR /app
 
-# Copy dependency files
-COPY pyproject.toml setup.cfg README.md ./
+# Copy your package and requirements
+COPY . /app
 
-# Copy the package and tests
-COPY scientific_calculator/ ./scientific_calculator/
-COPY tests/ ./tests/
+# Install pip editable package
+RUN pip install --upgrade pip \
+    && pip install -e .
 
-# Upgrade pip
-RUN pip install --upgrade pip
-
-# Install your package in editable mode along with dependencies
-RUN pip install -e . 
-
-# Default command to run tests
-CMD ["python3", "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"]
+# Set the default command to launch Python CLI
+CMD ["python3", "-m", "scientific_calculator.calc"]
