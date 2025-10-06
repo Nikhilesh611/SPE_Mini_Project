@@ -16,3 +16,4 @@
       shell: |
         docker stop sci_calc || true
         docker rm sci_cal_
+      ignore_errors : yes
