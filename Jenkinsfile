@@ -28,7 +28,7 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 sh '''
-                    source .venv/bin/activate
+                    . .venv/bin/activate
                     python -m unittest discover tests
                 '''
             }
