@@ -19,7 +19,6 @@ pipeline {
                     python3 -m venv .venv
                     . .venv/bin/activate
                     pip install --upgrade pip
-                    pip install -e .
                     pip install -r requirements.txt
                 '''
             }
@@ -37,12 +36,12 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Explicitly tag with 'latest' and commit SHA for uniqueness
+                    // Tag the image with commit SHA and latest
                     def commitId = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                     def imageTag = "${DOCKER_IMAGE_NAME}:${commitId}"
-                    docker.build(imageTag, '.')
                     
-                    // Also tag as latest
+                    // Build the Docker image directly from source
+                    docker.build(imageTag, '.')
                     sh "docker tag ${imageTag} ${DOCKER_IMAGE_NAME}:latest"
                 }
             }
@@ -52,7 +51,6 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS_ID) {
-                        // Push both latest and commit-tagged images
                         def commitId = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
                         docker.image("${DOCKER_IMAGE_NAME}:${commitId}").push()
                         docker.image("${DOCKER_IMAGE_NAME}:latest").push()

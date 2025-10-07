@@ -1,2 +1,0 @@
-[console_scripts]
-scientific-calculator = scientific_calculator.calc:main
