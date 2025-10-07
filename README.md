@@ -10,7 +10,7 @@ Features
     Getting Started
     Python 3.12
     Docker
-    Ansible
+    Ansibl
 
 
 Setup & Run Locally
