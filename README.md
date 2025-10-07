@@ -8,7 +8,7 @@ Features
     Dockerized for easy deployment
     Automated deployment with Ansible
     Getting Started
-    Python 3.8+
+    Python 3.12
     Docker
     Ansible
 
