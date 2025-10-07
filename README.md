@@ -11,7 +11,7 @@ A Python-based **Scientific Calculator** with a REST API, packaged for easy depl
 
 
 ### Prerequisites
-- Python 3.12  
+- Python 3.12>= 
 - Docker  
 - Ansible  
 
