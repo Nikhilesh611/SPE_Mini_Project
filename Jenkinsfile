@@ -15,10 +15,9 @@ pipeline {
 
         stage('Setup Python Environment') {
             steps {
-                // Use a shell to set up a virtual environment and install dependencies
                 sh '''
                     python3 -m venv .venv
-                    . .venv/bin/activate
+                    source .venv/bin/activate
                     pip install --upgrade pip
                     pip install -e .
                     pip install -r requirements.txt
@@ -29,7 +28,7 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 sh '''
-                    . .venv/bin/activate
+                    source .venv/bin/activate
                     python -m unittest discover tests
                 '''
             }
@@ -38,8 +37,13 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image from Dockerfile
-                    def customImage = docker.build(DOCKER_IMAGE_NAME)
+                    // Explicitly tag with 'latest' and commit SHA for uniqueness
+                    def commitId = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                    def imageTag = "${DOCKER_IMAGE_NAME}:${commitId}"
+                    docker.build(imageTag, '.')
+                    
+                    // Also tag as latest
+                    sh "docker tag ${imageTag} ${DOCKER_IMAGE_NAME}:latest"
                 }
             }
         }
@@ -48,7 +52,10 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS_ID) {
-                        docker.image(DOCKER_IMAGE_NAME).push('latest')
+                        // Push both latest and commit-tagged images
+                        def commitId = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                        docker.image("${DOCKER_IMAGE_NAME}:${commitId}").push()
+                        docker.image("${DOCKER_IMAGE_NAME}:latest").push()
                     }
                 }
             }
@@ -56,7 +63,6 @@ pipeline {
 
         stage('Deploy with Ansible') {
             steps {
-                // Pull the latest image and deploy using your Ansible playbook
                 sh 'ansible-playbook -i ansible/hosts.ini ansible/deploy.yml'
             }
         }
